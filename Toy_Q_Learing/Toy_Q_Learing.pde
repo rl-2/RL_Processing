@@ -1,10 +1,13 @@
 // First RL Demo in Processing 
 //
 // by Jieliang (Rodger) Luo
+// rodgerluo.com
+//
 // March 3th, 2018
 // Developed on OpenAI Hachathon
 //
-// Referenced by MorvanZhou's Example 
+// Reference: 
+// MorvanZhou's RL Example 
 // (https://github.com/MorvanZhou/Reinforcement-learning-with-tensorflow/tree/master/contents/1_command_line_reinforcement_learning)
 
 int N_STATES = 10;   // the length of the 1 dimensional world
