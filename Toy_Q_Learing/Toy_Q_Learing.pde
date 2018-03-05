@@ -7,13 +7,18 @@
 // Referenced by MorvanZhou's Example 
 // (https://github.com/MorvanZhou/Reinforcement-learning-with-tensorflow/tree/master/contents/1_command_line_reinforcement_learning)
 
-int N_STATES = 6;   // the length of the 1 dimensional world
+int N_STATES = 10;   // the length of the 1 dimensional world
 String[] ACTIONS = {"left", "right"};     // available actions
 float EPSILON = 0.9;   // greedy police
 float ALPHA = 0.1;     // learning rate
 float GAMMA = 0.9;    // discount factor
 int MAX_EPISODES = 13;   // maximum episodes
 int FRESH_TIME = 300;    // fresh time for one move
+
+int step_counter, S;
+boolean is_terminated = true;
+int episode = 0;
+Table q_table;
 
 // initialize a table with all zeros 
 Table build_q_table(int n_states, String[] actions){
@@ -98,36 +103,50 @@ void update_env(int S, int episode, int step_counter){
   }
   
   if(S == -1){
+    visualization(N_STATES-1);
+    delay(FRESH_TIME);
     println("Episode " + episode + ": total_steps= " + step_counter);
-    delay(2000);
   }
   else{
-    env_list[S] = 'o';
-    String env = "";
-    for(int i=0; i<env_list.length; i++){
-      env += env_list[i];
-    }
-    println(env);
+    //env_list[S] = 'o';
+    //String env = "";
+    //for(int i=0; i<env_list.length; i++){
+    //  env += env_list[i];
+    //}
+    //println(env);
+    visualization(S);
     delay(FRESH_TIME);
   }
 }
 
-void drawSomething(){
+void visualization(int S){
   // target 
   fill(255,0,0);
-  rect(150,75,30,30);
+  rect(180,90,20,20);
+  
+  // agent
+  fill(122, 122);
+  rect(20*S, 90, 20, 20);
 }
 
-void rl(){
-  Table q_table = build_q_table(N_STATES, ACTIONS);
+void setup(){
+  size(200, 200);
   
-  for(int episode=0; episode<MAX_EPISODES; episode++){
-    int step_counter = 0;
-    int S = 0;
-    boolean is_terminated = false;
+  q_table = build_q_table(N_STATES, ACTIONS);
+}
+
+void draw(){
+  background(255);
+  
+  if(is_terminated){ 
+    step_counter = 0;
+    S = 0;
+    is_terminated = false;
     update_env(S, episode, step_counter);
+    episode += 1;
+  }
     
-    while(!is_terminated){
+   else if(!is_terminated){
       String A = choose_action(S, q_table);
       int[] S_R = get_env_feedback(S, A);
       int S_Next = S_R[0];
@@ -156,17 +175,6 @@ void rl(){
 
       step_counter += 1;
     }
-  }
-  
-  // return q_table;
-}
-
-void setup(){
-  size(180, 180);
-  noLoop();
-}
-
-void draw(){
-  background(255);
-  rl();
+    
+    if(episode > MAX_EPISODES) exit();
 }
