@@ -2,7 +2,10 @@
 //
 // by Jieliang (Rodger) Luo
 // March 3th, 2018
-// Developed on OpenAI Hachathon 
+// Developed on OpenAI Hachathon
+//
+// Referenced by MorvanZhou's Example 
+// (https://github.com/MorvanZhou/Reinforcement-learning-with-tensorflow/tree/master/contents/1_command_line_reinforcement_learning)
 
 int N_STATES = 6;   // the length of the 1 dimensional world
 String[] ACTIONS = {"left", "right"};     // available actions
@@ -109,7 +112,13 @@ void update_env(int S, int episode, int step_counter){
   }
 }
 
-Table rl(){
+void drawSomething(){
+  // target 
+  fill(255,0,0);
+  rect(150,75,30,30);
+}
+
+void rl(){
   Table q_table = build_q_table(N_STATES, ACTIONS);
   
   for(int episode=0; episode<MAX_EPISODES; episode++){
@@ -149,13 +158,15 @@ Table rl(){
     }
   }
   
-  return q_table;
+  // return q_table;
 }
 
 void setup(){
-  //Table table = build_q_table(N_STATES, ACTIONS);
-  //saveTable(table, "data/table.csv");
-  Table q_table = rl();
-  //println("Q Table");
-  //println(q_table);
+  size(180, 180);
+  noLoop();
+}
+
+void draw(){
+  background(255);
+  rl();
 }
